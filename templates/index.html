@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- CSS only -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+<!-- JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</head>
+<body>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>Identity_Proof_No </th>
+            <th>State_Ref_Number</th>
+            <th>StateCode</th>
+            <th>DistrictCode</th>
+            <th>Sub_District_Code</th>
+            <th>BlockCode</th>
+            <th>VillageCode</th>
+            <th>Farmer_Name</th>
+            <th>Gender</th>
+            <th>Farmer_Category</th>
+            <th>Identity_Proof_Type</th>
+            <th>IFSC_Code</th>
+            <th>Bank_Account_Number</th>
+            <th>MobileNo</th>
+            <th>DOB</th>
+            <th>Father_Mother_Husband_Name</th>
+            <th>HomeAddress</th>
+            <th>Ownership_Single_Joint</th>
+            <th>Sr_No</th>
+            <th>Survey_Khata_No</th>
+            <th>Khasra_Drag_No</th>
+            <th>Area</th>
+            <th>FarmerType</th>
+            <th>IMEI </th>
+            
+            
+            
+
+        </tr>
+        </thead>
+        <tbody id="mydata">
+            {%for d in data %}
+            <tr>
+                <th> {{ d.Identity_Proof_No }} </th>
+                <td> {{ d.State_Ref_Number}} </td>
+                <td> {{ d.StateCode}} </td>
+                <td> {{ d.DistrictCode}} </td>
+                <td> {{ d.Sub_District_Code}} </td>
+                <td> {{ d.BlockCode}} </td>
+                <td> {{ d.VillageCode}} </td>
+                <td> {{ d.Farmer_Name}} </td>
+                <td> {{ d.Gender}} </td>
+                <td> {{ d.Farmer_Category}} </td>
+                <td> {{ d.Identity_Proof_Type}} </td>
+                <td> {{ d.IFSC_Code}} </td>
+                <td> {{ d.Bank_Account_Number}} </td>
+                <td> {{ d.MobileNo}} </td>
+                <td> {{ d.DOB}} </td>
+                <td> {{ d.Father_Mother_Husband_Name}} </td>
+                <td> {{ d.HomeAddress}} </td>
+                <td> {{ d.Ownership_Single_Joint}} </td>
+                <td> {{ d.Sr_No}} </td>
+                <td> {{ d.Survey_Khata_No}} </td>
+                <td> {{ d.Khasra_Drag_No}} </td>
+                <td> {{ d.Area}} </td>
+                <td> {{ d.FarmerType}} </td>
+                <td> {{ d.IMEI }} </td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+    
+</body>
+</html>
