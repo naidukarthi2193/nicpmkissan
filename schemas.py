@@ -1,6 +1,4 @@
-from datetime import date
 from pydantic import BaseModel
-
 
 class Farmer(BaseModel):
     Identity_Proof_No: str
