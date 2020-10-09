@@ -81,22 +81,22 @@ def get_districts():
 def get_subdistricts(dis_code):
     subdistrictslist = list()
     for districts in lgdirectory:
-        if districts['dis_code'] == dis_code:
+        if districts['dis_code'] == int(dis_code):
             for subdistricts in districts['subdistricts']:
                 subdict= dict()
                 subdict['code'] = subdistricts['subdis_code']
                 subdict['name'] = subdistricts['subdis_name']
                 subdistrictslist.append(subdict)
             break
-    return [ast.literal_eval(el1) for el1 in set([str(el2) for el2 in response])]
+    return subdistrictslist
 
 @app.get("/village/{dis_code}/{subdis_code}")
 def get_villages(dis_code,subdis_code):
     villageslist = list()
     for districts in lgdirectory:
-        if districts['dis_code'] == dis_code:
+        if districts['dis_code'] == int(dis_code):
             for subdistricts in districts['subdistricts']:
-                if subdistricts['subdis_code'] == subdis_code:
+                if subdistricts['subdis_code'] == int(subdis_code):
                     for villages in subdistricts['villages']:
                         vill_dict = dict()
                         vill_dict['name'] = villages['village_name']
@@ -109,7 +109,7 @@ def get_villages(dis_code,subdis_code):
 def get_blocks(dis_code):
     blocklist = list()
     for districts in lgdirectory:
-        if districts['dis_code'] == dis_code:
+        if districts['dis_code'] == int(dis_code):
             for block in districts['blocks']:
                 block_dict= dict()
                 block_dict['code'] = block['block_code']
