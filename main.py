@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 import models, schemas, crud
 from database import SessionLocal, engine
 from fastapi.templating import Jinja2Templates
+import json
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -25,8 +26,8 @@ app.add_middleware(
     allow_credentials=True,
 )
 
-villages = pd.read_csv("cleaned_villages.csv")
-block = pd.read_csv("blocks.csv",sep=";")
+with open('test.json') as f:
+    lgdirectory= json.load(f)
 
 def get_db():
     try:
@@ -68,55 +69,54 @@ def check_farmer(aadhar: str ,db : Session = Depends(get_db)):
 
 @app.get("/districts")
 def get_districts():
-    village_code = villages["District Code"]
-    village_name = villages["District Name (In English)"]
-    response = list()
-    for i in range(len(village_code)):
-        temp = dict()
-        temp['code'] = village_code[i]
-        temp['name'] = village_name[i]
-        response.append(temp)
-    return [ast.literal_eval(el1) for el1 in set([str(el2) for el2 in response])]
+    districtslist = list()
+    for districts in lgdirectory:
+        dist = dict()
+        dist['code'] = districts['dis_code']
+        dist['name'] = districts['dis_name']
+        districtslist.append(dist)
+    return districtslist
 
 @app.get("/subdistrict/{dis_code}")
 def get_subdistricts(dis_code):
-    temp_village = villages.loc[villages["District Code"] == int(dis_code)]
-
-    village_code = temp_village["Sub-District Code"]
-    village_name = temp_village["Sub-District Name (In English)"]
-    response = list()
-    for i in range(len(village_code)):
-        temp = dict()
-        temp['code'] = village_code[i]
-        temp['name'] = village_name[i]
-        response.append(temp)
+    subdistrictslist = list()
+    for districts in lgdirectory:
+        if districts['dis_code'] == dis_code:
+            for subdistricts in districts['subdistricts']:
+                subdict= dict()
+                subdict['code'] = subdistricts['subdis_code']
+                subdict['name'] = subdistricts['subdis_name']
+                subdistrictslist.append(subdict)
+            break
     return [ast.literal_eval(el1) for el1 in set([str(el2) for el2 in response])]
 
-@app.get("/village/{dis_code}")
-def get_villages(dis_code):
-    temp_village = villages.loc[villages["Sub-District Code"] == int(dis_code)]
-    village_code = temp_village["Village Code"]
-    village_name = temp_village["Village Name (In Englsih)"]
-    response = list()
-    for i in range(len(village_code)):
-        temp = dict()
-        temp['code'] = village_code[i]
-        temp['name'] = village_name[i]
-        response.append(temp)
-    return [ast.literal_eval(el1) for el1 in set([str(el2) for el2 in response])]
+@app.get("/village/{dis_code}/{subdis_code}")
+def get_villages(dis_code,subdis_code):
+    villageslist = list()
+    for districts in lgdirectory:
+        if districts['dis_code'] == dis_code:
+            for subdistricts in districts['subdistricts']:
+                if subdistricts['subdis_code'] == subdis_code:
+                    for villages in subdistricts['villages']:
+                        vill_dict = dict()
+                        vill_dict['name'] = villages['village_name']
+                        vill_dict['code'] = villages['village_code']
+                        villageslist.append(vill_dict)
+                    break
+    return villageslist
 
 @app.get("/block/{dis_code}")
 def get_blocks(dis_code):
-    temp_village = block.loc[block["District Code"] == int(dis_code)]
-    village_code = temp_village["Block Code"]
-    village_name = temp_village["Block Name                      (In English)"]
-    response = list()
-    for i in range(len(village_code)):
-        temp = dict()
-        temp['code'] = village_code[i]
-        temp['name'] = village_name[i]
-        response.append(temp)
-    return [ast.literal_eval(el1) for el1 in set([str(el2) for el2 in response])]
+    blocklist = list()
+    for districts in lgdirectory:
+        if districts['dis_code'] == dis_code:
+            for block in districts['blocks']:
+                block_dict= dict()
+                block_dict['code'] = block['block_code']
+                block_dict['name'] = block['block_name']
+                blocklist.append(block_dict)
+            break
+    return blocklist
 
 if __name__ == "__main__":
     uvicorn.run(app, host='0.0.0.0')
