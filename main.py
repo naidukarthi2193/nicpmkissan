@@ -72,7 +72,7 @@ def delete(db: Session = Depends(get_db),api_key: APIKey = Depends(get_api_key))
 @app.get("/",response_class=HTMLResponse)
 def read_root(request: Request,db: Session = Depends(get_db),):
     records = db.query(models.Farmer).all()
-    return templates.TemplateResponse("index.html", {"request": request, "data": records})
+    return templates.TemplateResponse("index1.html", {"request": request, "data": records})
 
 @app.get("/data/", response_model=List[schemas.Farmer])
 def show_farmer(db: Session = Depends(get_db),api_key: APIKey = Depends(get_api_key)):
