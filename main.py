@@ -74,6 +74,11 @@ def read_root(request: Request,db: Session = Depends(get_db),):
     records = db.query(models.Farmer).all()
     return templates.TemplateResponse("index1.html", {"request": request, "data": records})
 
+@app.get("/alldata",response_class=HTMLResponse)
+def read_data(request: Request,db: Session = Depends(get_db),):
+    records = db.query(models.Farmer).all()
+    return records
+
 @app.get("/data/", response_model=List[schemas.Farmer])
 def show_farmer(db: Session = Depends(get_db),api_key: APIKey = Depends(get_api_key)):
     records = db.query(models.Farmer).all()
