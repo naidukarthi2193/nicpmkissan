@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- CSS only -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <style>
+        /* @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,400;0,500;0,600;0,700;1,100;1,400&display=swap"); */
+
+        * {
+            margin: 0;
+            padding: 0;
+            -webkit-box-sizing: inherit;
+            box-sizing: inherit;
+        }
+
+        html {
+            font-size: 62.5%;
+        }
+
+        body {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            font-family: "Montserrat", sans-serif;
+        }
+
+        .farmer {
+            margin: 2rem;
+            display: inline-block;
+            width: 45%;
+            background-color: #0a1128;
+            border-radius: 1.1rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .farmer--nav {
+            background-color: #034078;
+            width: 100%;
+            height: 7rem;
+            position: relative;
+        }
+
+        .farmer--nav-option {
+            width: 10rem;
+        }
+
+        .farmer--nav-link:link,
+        .farmer--nav-link:visited {
+            text-decoration: none;
+            color: #fefcfb;
+        }
+
+        .farmer--nav-link:hover {
+            color: #4edaa9;
+        }
+
+        .farmer--nav-options {
+            font-size: 2.5rem;
+            padding: 1rem 3rem;
+            font-weight: 600;
+        }
+
+
+
+        .farmer--nav-options-1 {
+            display: inline-block;
+            margin-right: 2rem;
+        }
+
+        .farmer--nav-options-2 {
+            margin-right: 2rem;
+            display: inline-block;
+        }
+
+        .farmer--nav-options-3 {
+            margin-right: 2rem;
+            display: inline-block;
+        }
+
+        .farmer--nav-options-4 {
+            margin-right: 2rem;
+            display: inline-block;
+        }
+
+        .farmer--body {
+            width: 90%;
+            margin: 3rem auto;
+            position: relative;
+        }
+
+        .farmer--id {
+            display: inline-block;
+            position: relative;
+            left: 35%;
+            text-align: center;
+            max-width: 45rem;
+            background-color: #fefcfb;
+            padding: 2rem 4rem;
+            letter-spacing: 0.3rem;
+        }
+
+        .farmer--id__title {
+            font-size: 2rem;
+            color: #034078;
+        }
+
+        .farmer--id__description {
+            color: #1282a2;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .farmer--subsection {
+            position: relative;
+        }
+
+        .farmer--subsection__div {
+            padding: 2rem;
+        }
+
+        .farmer--subsection-1 {
+            margin: 2rem;
+            padding: 2rem 4rem;
+            -webkit-columns: 2;
+            columns: 2;
+            width: 100%;
+            background-color: #fefcfb;
+            z-index: -1;
+        }
+
+        .farmer--subsection-1:target {
+            color: green;
+            display: block;
+            z-index: 100;
+        }
+
+        .farmer--subsection-2 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            margin: 2rem;
+            padding: 2rem 4rem;
+            -webkit-columns: 2;
+            columns: 2;
+            background-color: #fefcfb;
+            display: none;
+            z-index: 0;
+        }
+
+        .farmer--subsection-2:target {
+            display: block;
+            z-index: 100;
+        }
+
+        .farmer--subsection-3 {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            margin: 2rem;
+            padding: 2rem 4rem;
+            -webkit-columns: 2;
+            columns: 2;
+            background-color: #fefcfb;
+            z-index: 0;
+        }
+
+        .farmer--subsection-3:target {
+            display: block;
+            z-index: 100;
+        }
+
+        .farmer--subsection-4 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: none;
+            margin: 2rem;
+            padding: 2rem 4rem;
+            -webkit-columns: 2;
+            columns: 2;
+            background-color: #fefcfb;
+            z-index: 0;
+        }
+
+        .farmer--subsection-4:target {
+            display: block;
+            z-index: 100;
+        }
+
+        .farmer--subsection__title {
+            margin: 0.2rem;
+            font-size: 3rem;
+            color: #034078;
+        }
+
+        .farmer--subsection__description {
+            margin: 0.4rem;
+            color: #1282a2;
+            font-size: 2.5rem;
+            font-weight: 600;
+        }
+
+        /*# sourceMappingURL=style.css.map */
+    </style>
+
+    <!-- JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Identity_Proof_No </th>
+                <th>State_Ref_Number</th>
+                <th>StateCode</th>
+                <th>DistrictCode</th>
+                <th>Sub_District_Code</th>
+                <th>BlockCode</th>
+                <th>VillageCode</th>
+                <th>Farmer_Name</th>
+                <th>Gender</th>
+                <th>Farmer_Category</th>
+                <th>Identity_Proof_Type</th>
+                <th>IFSC_Code</th>
+                <th>Bank_Account_Number</th>
+                <th>MobileNo</th>
+                <th>DOB</th>
+                <th>Father_Mother_Husband_Name</th>
+                <th>HomeAddress</th>
+                <th>Ownership_Single_Joint</th>
+                <th>Sr_No</th>
+                <th>Survey_Khata_No</th>
+                <th>Khasra_Drag_No</th>
+                <th>Area</th>
+                <th>FarmerType</th>
+                <th>IMEI </th>
+
+
+
+
+            </tr>
+        </thead> -->
+    <!-- <tbody id="mydata"> -->
+    {%for d in data %}
+    <!-- <tr>
+            <th> </th>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+        </tr> -->
+    <div class="farmer">
+        <div class="farmer--nav">
+            <div class="farmer--nav-options">
+                <a class="farmer--nav-link" href="#general-{{d.Identity_Proof_No}}">
+                    <div class="farmer--nav-option farmer--nav-options-1">General</div>
+                </a>
+                <a href="#farmer-{{d.Identity_Proof_No}}" class="farmer--nav-link">
+                    <div class="farmer--nav-option farmer--nav-options-2">Farmer</div>
+                </a>
+                <a href="#land-{{d.Identity_Proof_No}}" class="farmer--nav-link">
+                    <div class="farmer--nav-option farmer--nav-options-3">Land</div>
+                </a>
+                <a href="#location-{{d.Identity_Proof_No}}" class="farmer--nav-link">
+                    <div class="farmer--nav-option farmer--nav-options-4">Location</div>
+                </a>
+            </div>
+            <div class="farmer--nav-bar" id="bar"></div>
+        </div>
+        <div class="farmer--body">
+            <div class="farmer--id">
+                <h2 class="farmer--id__title">Identity Proof no.</h2>
+                <p class="farmer--id__description">{{ d.Identity_Proof_No }}</p>
+            </div>
+            <div class="farmer--subsection">
+                <div class="farmer--subsection-1" id="general-{{d.Identity_Proof_No}}">
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">Farmer name:</h2>
+                        <p class="farmer--subsection__description">{{ d.Farmer_Name}}</p>
+                    </div>
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">Gender</h2>
+                        <p class="farmer--subsection__description">{{ d.Gender}}</p>
+                    </div>
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">Mobile No.:</h2>
+                        <p class="farmer--subsection__description">{{ d.MobileNo}} </p>
+                    </div>
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">Date Of Birth</h2>
+                        <p class="farmer--subsection__description">{{ d.DOB}}</p>
+                    </div>
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">Father Mother Husband Name</h2>
+                        <p class="farmer--subsection__description">{{ d.Father_Mother_Husband_Name}}</p>
+                    </div>
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">Home Address</h2>
+                        <p class="farmer--subsection__description"> {{ d.HomeAddress}}
+                        </p>
+                    </div>
+                </div>
+                <div class="farmer--subsection-2" id="farmer-{{d.Identity_Proof_No}}">
+
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">Farmer Category</h2>
+                        <p class="farmer--subsection__description">{{ d.Farmer_Category}}</p>
+                    </div>
+
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">Identity Proof Type</h2>
+                        <p class="farmer--subsection__description">{{ d.Identity_Proof_Type}}</p>
+                    </div>
+
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">Bank Account Number:</h2>
+                        <p class="farmer--subsection__description">{{ d.Bank_Account_Number}}</p>
+                    </div>
+
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">IFSC code</h2>
+                        <p class="farmer--subsection__description"> {{ d.IFSC_Code}}</p>
+                    </div>
+
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">Ownership Single Joint</h2>
+                        <p class="farmer--subsection__description">{{ d.Ownership_Single_Joint}}</p>
+                    </div>
+
+                </div>
+                <div class="farmer--subsection-3" id="land-{{d.Identity_Proof_No}}">
+
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">Sr. No.:</h2>
+                        <p class="farmer--subsection__description">{{ d.Sr_No}}</p>
+                    </div>
+
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">Survey Khata No.:</h2>
+                        <p class="farmer--subsection__description">{{ d.Survey_Khata_No}} </p>
+                    </div>
+
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">Khasra Drag No.:</h2>
+                        <p class="farmer--subsection__description">{{ d.Khasra_Drag_No}}</p>
+                    </div>
+
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">Area:</h2>
+                        <p class="farmer--subsection__description">{{ d.Area}}</p>
+                    </div>
+
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">Farmer Type:</h2>
+                        <p class="farmer--subsection__description">{{ d.FarmerType}}</p>
+                    </div>
+
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">IMEI</h2>
+                        <p class="farmer--subsection__description">{{ d.IMEI }}</p>
+                    </div>
+
+                </div>
+                <div class="farmer--subsection-4" id="location-{{d.Identity_Proof_No}}">
+
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">State Ref Number</h2>
+                        <p class="farmer--subsection__description">{{ d.State_Ref_Number}}</p>
+                    </div>
+
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">State Code</h2>
+                        <p class="farmer--subsection__description"> {{ d.StateCode}}</p>
+                    </div>
+
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">District Code</h2>
+                        <p class="farmer--subsection__description"> {{ d.DistrictCode}}</p>
+                    </div>
+
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">Sub District Code</h2>
+                        <p class="farmer--subsection__description">{{ d.Sub_District_Code}}</p>
+                    </div>
+
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">Block Code</h2>
+                        <p class="farmer--subsection__description">{{ d.BlockCode}}</p>
+                    </div>
+
+                    <div class="farmer--subsection__div">
+                        <h2 class="farmer--subsection__title">Village Code</h2>
+                        <p class="farmer--subsection__description">{{ d.VillageCode}} </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {%endfor%}
+    <!-- </tbody> -->
+    <!-- </table> -->
+
+</body>
+
+</html>
