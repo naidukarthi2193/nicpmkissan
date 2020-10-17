@@ -30,3 +30,40 @@ class Farmer(Base):
     Area= Column(String)
     FarmerType= Column(String)
     IMEI = Column(String)
+
+    def getdict(self):
+        return {"Identity_Proof_No" : self.Identity_Proof_No,
+        "State_Ref_Number": self.State_Ref_Number,
+        "StateCode": self.StateCode,
+        "DistrictCode":self.DistrictCode,
+        "Sub_District_Code":self.Sub_District_Code,
+        "BlockCode":self.BlockCode,
+        "VillageCode":self.VillageCode,
+        "Farmer_Name":self.Farmer_Name,
+        "Gender":self.Gender,
+        "Farmer_Category":self.Farmer_Category,
+        "Identity_Proof_Type":self.Identity_Proof_Type,
+        "IFSC_Code":self.IFSC_Code,
+        "Bank_Account_Number":self.Bank_Account_Number,
+        "MobileNo":self.MobileNo,
+        "DOB":self.DOB,
+        "Father_Mother_Husband_Name":self.Father_Mother_Husband_Name,
+        "HomeAddress":self.HomeAddress,
+        "Ownership_Single_Joint":self.Ownership_Single_Joint,
+        "Sr_No":self.Sr_No,
+        "Survey_Khata_No":self.Survey_Khata_No,
+        "Khasra_Drag_No":self.Khasra_Drag_No,
+        "Area":self.Area,
+        "FarmerType":self.FarmerType,
+        "IMEI" :self.IMEI}
+
+class WebUser(Base):
+    __tablename__ = "WebUser"
+    WebUser_Email =  Column(String, unique=True, primary_key=True)
+    WebUser_Name =  Column(String)
+    WebUser_Contact =  Column(String)
+    WebUser_Password =  Column(String)
+    WebUser_District =  Column(String)
+    WebUser_SubDistrict =  Column(String)
+    WebUser_Verified = Column(String)
+    WebUser_Role = Column(String)

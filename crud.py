@@ -1,5 +1,9 @@
 from sqlalchemy.orm import Session
 import models ,  schemas
+from json2xml import json2xml
+from json2xml.utils import readfromurl, readfromstring, readfromjson
+import json
+import xml.etree.ElementTree as ET
 
 def create_user(db: Session ,  farmer: schemas.Farmer):
     db_user = models.Farmer(
@@ -33,8 +37,59 @@ def create_user(db: Session ,  farmer: schemas.Farmer):
     db.refresh(db_user)
     return db_user
 
+def create_WebUser(db:Session, webuser:schemas.WebUser):
+    db_user = models.WebUser(
+        WebUser_Email =  webuser.WebUser_Email,
+        WebUser_Name =  webuser.WebUser_Name,
+        WebUser_Contact =  webuser.WebUser_Contact,
+        WebUser_Password =  webuser.WebUser_Password,
+        WebUser_District =  webuser.WebUser_District,
+        WebUser_SubDistrict =  webuser.WebUser_SubDistrict,
+        WebUser_Verified = "0" , 
+        WebUser_Role = webuser.WebUser_Role
+        )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
+def get_all_webusers(db:Session):
+    return db.query(models.WebUser).all()
+
+
 def get_all(db:Session):
     return db.query(models.Farmer).all()
 
 def check_aadhar(db: Session, aadhar: str):
     return db.query(models.Farmer).filter(models.Farmer.Identity_Proof_No == aadhar).first()
+
+def check_webuser_login(db:Session,email:str,password:str):
+    print(password)
+    return db.query(models.WebUser).filter(models.WebUser.WebUser_Email == email ).first()
+
+def get_unverfied_webusers(db:Session):
+    return db.query(models.WebUser).filter(models.WebUser.WebUser_Verified == "0").all()
+
+def get_unverfied_tehsildar(db:Session,district:str):
+    return db.query(models.WebUser).filter((models.WebUser.WebUser_Verified == "0" )& (models.WebUser.WebUser_District == district ) & ( models.WebUser.WebUser_Role == "Tehsildar")).all()
+
+def get_tehsildar_farmers(db:Session,district:str,subdistrict:str):
+    return db.query(models.Farmer).filter((models.Farmer.DistrictCode== district) & ( models.Farmer.Sub_District_Code== subdistrict)).all()
+
+def get_collector_farmers(db:Session,district:str):
+    return db.query(models.Farmer).filter(models.Farmer.DistrictCode== district).all()
+
+def getfarmerbyid(db:Session,id_no:str):
+    farmer = db.query(models.Farmer).filter(models.Farmer.Identity_Proof_No == id_no).first()
+    print(type(json.dumps(farmer.getdict())))
+    data =  readfromstring(json.dumps(farmer.getdict()) )
+    xmlstring =  json2xml.Json2xml(data,wrapper="Farmer", pretty=True).to_xml()
+    return xmlstring
+
+
+def verify_user(db:Session,email:str):
+    db.query(models.WebUser).filter(models.WebUser.WebUser_Email == email).update({models.WebUser.WebUser_Verified:"1"}, synchronize_session = False)
+    db.commit()
+    db.refresh(db.query(models.WebUser).filter(models.WebUser.WebUser_Email == email).first())
+    return db.query(models.WebUser).filter(models.WebUser.WebUser_Email == email).first()

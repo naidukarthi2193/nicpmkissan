@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Bootstrap Card</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+      </head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+    <h1 class="navbar-brand" style="color: white;">NIC PM KISSAN  </a>
+  </nav>
+
+    {%for d in data %}
+    <div class="card" id="{{d.WebUser_Email}}">
+        <div class="card-body">
+            <h3 class="card-title">Email : {{ d.WebUser_Email}} </h3>
+            <p>Name : <strong> {{d.WebUser_Name}}</strong> </p>
+            <p>Contact : <strong> {{d.WebUser_Contact}} </strong> </p>
+            <p>Role : <strong> {{d.WebUser_Role}} </strong> </p>
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#verifiedModalCenter" onclick=" onVerify( '{{d.WebUser_Email}}' )">Verify</button>
+            <button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#rejectedModalCenter" >Reject</button>
+        </div>
+      </div>
+    {%else%}
+    <h1>No Users Left to Verify</h1>
+    {%endfor%}
+
+    <div class="modal fade" id="verifiedModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Details Verified</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            User Has Been Added to the Database
+            <br>
+            A mail has been sent to the user
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="rejectedModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">User Application Rejected</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            User Has <strong>Not</strong> Been Added to the Database
+            <br>
+            A mail has been sent to the user
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <script>
+        function onVerify(email) {
+  //         var url = "http://localhost:8000/verifyuser?"
+  //           console.log(email)
+  //           fetch(url, {
+  //             method: 'post',
+  //             headers: {
+  //               "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+  //               },
+  //             body: new URLSearchParams({email: email,access_token: "key",})
+  // })
+  // .then(function (data) {
+  //   console.log('Request succeeded with JSON response', data);
+  // })
+  // .catch(function (error) {
+  //   console.log('Request failed', error);
+  // });
+  // TODO VERIFY URL
+      var x = document.getElementById(email);
+    x.style.display = "none";
+}
+    </script>
+    
+</body>
+</html>

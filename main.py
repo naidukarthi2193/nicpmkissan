@@ -1,20 +1,34 @@
 
-from typing import List
+import ast
+import json
+import os
+from typing import List, Optional
+
 import pandas as pd
 import uvicorn
-import ast
-from fastapi.responses import HTMLResponse
-from fastapi import Depends, FastAPI, HTTPException ,Request,Security
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security.api_key import APIKeyQuery, APIKeyCookie, APIKeyHeader, APIKey
-from sqlalchemy.orm import Session
-import models, schemas, crud
-from database import SessionLocal, engine
-from fastapi.templating import Jinja2Templates
-import json
+from cryptography.fernet import Fernet
 from dotenv import load_dotenv
-import os
+from fastapi import (Depends, FastAPI, Form, HTTPException, Request, Response,
+                     Security)
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
+from fastapi.security.api_key import (APIKey, APIKeyCookie, APIKeyHeader,
+                                      APIKeyQuery)
+from fastapi.templating import Jinja2Templates
+from sqlalchemy.orm import Session
+from starlette.responses import RedirectResponse
 from starlette.status import HTTP_403_FORBIDDEN
+
+import apis
+import crud
+import models
+import schemas
+from database import SessionLocal, engine
+
+file = open('passwordkey.key', 'rb')  # Open the file as wb to read bytes
+key = file.read()  # The key will be type bytes
+file.close()
+encryptkey = Fernet(key)
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -22,6 +36,8 @@ load_dotenv()
 API_KEY = os.getenv("API_KEY")
 API_KEY_NAME = os.getenv("API_KEY_NAME")
 COOKIE_DOMAIN = os.getenv("COOKIE_DOMAIN")
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 
 api_key_query = APIKeyQuery(name=API_KEY_NAME, auto_error=False)
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
@@ -63,87 +79,132 @@ def get_db():
     finally:
         db.close()
 
-@app.get("/delete")
-def delete(db: Session = Depends(get_db),api_key: APIKey = Depends(get_api_key)):
-    db.query(models.Farmer).delete()
-    db.commit()
-    return { "status" : "databse Cleared"}
+app.include_router(
+    apis.router,
+    tags=["APIs"],
+    dependencies=[Depends(get_db),Depends(get_api_key)],
+    responses={404: {"description": "Not found"}},
+)
 
-@app.get("/",response_class=HTMLResponse)
-def read_root(request: Request,db: Session = Depends(get_db),):
-    records = db.query(models.Farmer).all()
-    return templates.TemplateResponse("index2.html", {"request": request, "data": records})
+@app.get("/")
+def form_post(request: Request ):
+    return templates.TemplateResponse('homepage.html', context={'request': request})
 
-@app.get("/data/", response_model=List[schemas.Farmer])
-def show_farmer(db: Session = Depends(get_db),api_key: APIKey = Depends(get_api_key)):
-    records = db.query(models.Farmer).all()
-    return records
 
-@app.post("/add/" , response_model = schemas.Farmer)
-def add_farmer(farmer: schemas.Farmer,db: Session = Depends(get_db),api_key: APIKey = Depends(get_api_key)):
-    db_user = crud.check_aadhar(db=db , aadhar=farmer.Identity_Proof_No)
-    if db_user:
-        raise HTTPException(status_code=400 , detail="Farmer already registered")
-    return crud.create_user(db=db , farmer=farmer)
+@app.post("/checklogin/")
+def webuser_login(
+    request: Request,
+    email: str = Form(...),
+    password: str = Form(...),
+    role: str = Form(...),
+    db : Session = Depends(get_db)
+    ):
+    enc_password = encryptkey.encrypt(password.encode()).decode("utf-8")
+    enc_email = encryptkey.encrypt(email.encode()).decode("utf-8")
+    if role == "Admin":
+        if email == ADMIN_EMAIL and  password == ADMIN_PASSWORD:
+            return RedirectResponse( url=f'/verifiedadmin/'+enc_email ) 
+        return templates.TemplateResponse('detailsnotfound.html', context={'request': request})
+    db_user = crud.check_webuser_login(db=db , email=email,password=enc_password)
 
-@app.get("/check")
-def check_farmer(aadhar: str ,db : Session = Depends(get_db),api_key: APIKey = Depends(get_api_key)):
-    db_user = crud.check_aadhar(db=db , aadhar=aadhar)
-    if db_user:
-        raise HTTPException(status_code=400 , detail="Farmer already registered")
+    print(db_user)
+    if db_user == None :
+        return templates.TemplateResponse('detailsnotfound.html', context={'request': request})
     else:
-        return { "status" : "Not Registed"}
+        if db_user.WebUser_Verified=="0":
+            return templates.TemplateResponse('newusercreated.html', context={'request': request}) 
+        if role == "Collector":
+            return RedirectResponse( url=f'/verifiedcollector/'+enc_email +f'/'+encryptkey.encrypt(db_user.WebUser_District.encode()).decode("utf-8"))
+        else:
 
-@app.get("/districts")
-def get_districts(api_key: APIKey = Depends(get_api_key)):
-    districtslist = list()
-    for districts in lgdirectory:
-        dist = dict()
-        dist['code'] = districts['dis_code']
-        dist['name'] = districts['dis_name']
-        districtslist.append(dist)
-    return districtslist
+            enc_district =  encryptkey.encrypt(db_user.WebUser_District.encode()).decode("utf-8")
+            enc_subdistrict =  encryptkey.encrypt(db_user.WebUser_SubDistrict.encode()).decode("utf-8")
+            # TODO TEHSILDAR Collector IMPLEMENTATION
+            return RedirectResponse( url='/database/{}/{}/'.format(enc_district,enc_subdistrict))
+   
+@app.post("/database/")
+def getfarmerdatabase(
+    request: Request,
+    email: str = Form(...),
+    password: str = Form(...),
+    role: str = Form(...),
+    db : Session = Depends(get_db)
+    ):
+    enc_password = encryptkey.encrypt(password.encode()).decode("utf-8")
+    enc_email = encryptkey.encrypt(email.encode()).decode("utf-8")
+    if role == "Admin":
+        if email == ADMIN_EMAIL and  password == ADMIN_PASSWORD:
+            records = crud.get_all(db=db)
+            return templates.TemplateResponse("index2.html", {"request": request, "data": records}) 
 
-@app.get("/subdistrict/{dis_code}")
-def get_subdistricts(dis_code,api_key: APIKey = Depends(get_api_key)):
-    subdistrictslist = list()
-    for districts in lgdirectory:
-        if districts['dis_code'] == int(dis_code):
-            for subdistricts in districts['subdistricts']:
-                subdict= dict()
-                subdict['code'] = subdistricts['subdis_code']
-                subdict['name'] = subdistricts['subdis_name']
-                subdistrictslist.append(subdict)
-            break
-    return subdistrictslist
+        return templates.TemplateResponse('detailsnotfound.html', context={'request': request})
+    db_user = crud.check_webuser_login(db=db , email=email,password=enc_password)
+    if db_user == None :
+        return templates.TemplateResponse('detailsnotfound.html', context={'request': request})
+    else:
+        district = db_user.WebUser_District
+        subdistrict = db_user.WebUser_SubDistrict
+        if db_user.WebUser_Verified=="0":
+            return templates.TemplateResponse('newusercreated.html', context={'request': request}) 
+        if role == "Collector":
+            records = crud.get_collector_farmers(db=db,district=district)
+            return templates.TemplateResponse("index2.html", {"request": request, "data": records})
+        else:
+            records = crud.get_tehsildar_farmers(db=db,district=district,subdistrict=subdistrict)
+            return templates.TemplateResponse("index2.html", {"request": request, "data": records})
 
-@app.get("/village/{dis_code}/{subdis_code}")
-def get_villages(dis_code,subdis_code,api_key: APIKey = Depends(get_api_key)):
-    villageslist = list()
-    for districts in lgdirectory:
-        if districts['dis_code'] == int(dis_code):
-            for subdistricts in districts['subdistricts']:
-                if subdistricts['subdis_code'] == int(subdis_code):
-                    for villages in subdistricts['villages']:
-                        vill_dict = dict()
-                        vill_dict['name'] = villages['village_name']
-                        vill_dict['code'] = villages['village_code']
-                        villageslist.append(vill_dict)
-                    break
-    return villageslist
+@app.post("/addwebuser")
+def webuser_add(
+    request: Request,
+    add_email: str = Form(...),
+    add_password: str = Form(...),
+    add_role: str = Form(...),
+    add_contact: str = Form(...),
+    add_name: str = Form(...),
+    add_district: str = Form(...),
+    add_subdistrict : Optional[str] = Form(None),
+    db: Session = Depends(get_db)
+    ):
+    print(add_role)
+    print(add_district,add_subdistrict)
+    if add_role == "Collector":
+        add_subdistrict="0"
+    newWebuser = schemas.WebUser(
+        WebUser_Email = add_email,
+        WebUser_Name =add_name,
+        WebUser_Contact =add_contact,
+        WebUser_Password =encryptkey.encrypt(add_password.encode()).decode("utf-8"),
+        WebUser_District =add_district,
+        WebUser_SubDistrict =add_subdistrict,
+        WebUser_Verified ="0",
+        WebUser_Role = add_role
+    )
+    if crud.create_WebUser(db=db, webuser = newWebuser) ==None:
+        raise HTTPException(status_code=400 , detail="Details Not Found") 
+    else:
+        return templates.TemplateResponse('newusercreated.html', context={'request': request})
 
-@app.get("/block/{dis_code}")
-def get_blocks(dis_code,api_key: APIKey = Depends(get_api_key)):
-    blocklist = list()
-    for districts in lgdirectory:
-        if districts['dis_code'] == int(dis_code):
-            for block in districts['blocks']:
-                block_dict= dict()
-                block_dict['code'] = block['block_code']
-                block_dict['name'] = block['block_name']
-                blocklist.append(block_dict)
-            break
-    return blocklist
+@app.post("/verifiedadmin/{enc_email}")
+def verifiedadmin(enc_email,request: Request,db : Session = Depends(get_db)):
+    email=encryptkey.decrypt(bytes(enc_email, 'utf-8') ).decode("utf-8") 
+    data =  crud.get_unverfied_webusers(db=db)
+    return templates.TemplateResponse('verifiedadmin.html', context={'request': request,"data":data})
+
+@app.post("/verifiedcollector/{enc_email}/{enc_district}")
+def verifiedcollector(enc_email,enc_district,request: Request,db : Session = Depends(get_db)):
+    email=encryptkey.decrypt(bytes(enc_email, 'utf-8') ).decode("utf-8")
+    district = encryptkey.decrypt(bytes(enc_district, 'utf-8') ).decode("utf-8")
+    data =  crud.get_unverfied_tehsildar(db=db,district=district)
+    return templates.TemplateResponse('verifiedadmin.html', context={'request': request,"data":data})
+
+@app.get("/downloadxml/{id_no}")
+def get_farmer_by_id(id_no:str,db:Session = Depends(get_db)):
+    data =  crud.getfarmerbyid(db,id_no)
+    return Response(content=str(data), media_type="application/xml")
 
 if __name__ == "__main__":
-    uvicorn.run(app, host='0.0.0.0')
+    # release
+    # uvicorn.run(app, host='0.0.0.0')
+    # debug
+    uvicorn.run(app)
+    

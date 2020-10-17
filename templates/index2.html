@@ -229,67 +229,9 @@
         <h1 style="color:white;">PMKISSAN DATABASE</h1>
         <!-- PM KISSAN DATABASE -->
       </nav>
-    <!-- <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th>Identity_Proof_No </th>
-                <th>State_Ref_Number</th>
-                <th>StateCode</th>
-                <th>DistrictCode</th>
-                <th>Sub_District_Code</th>
-                <th>BlockCode</th>
-                <th>VillageCode</th>
-                <th>Farmer_Name</th>
-                <th>Gender</th>
-                <th>Farmer_Category</th>
-                <th>Identity_Proof_Type</th>
-                <th>IFSC_Code</th>
-                <th>Bank_Account_Number</th>
-                <th>MobileNo</th>
-                <th>DOB</th>
-                <th>Father_Mother_Husband_Name</th>
-                <th>HomeAddress</th>
-                <th>Ownership_Single_Joint</th>
-                <th>Sr_No</th>
-                <th>Survey_Khata_No</th>
-                <th>Khasra_Drag_No</th>
-                <th>Area</th>
-                <th>FarmerType</th>
-                <th>IMEI </th>
-
-
-
-
-            </tr>
-        </thead> -->
-    <!-- <tbody id="mydata"> -->
+   
     {%for d in data %}
-    <!-- <tr>
-            <th> </th>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-        </tr> -->
+  
     <div class="farmer">
         <div class="farmer--nav">
             <div class="farmer--nav-options">
@@ -304,6 +246,9 @@
                 </a>
                 <a href="#location-{{d.Identity_Proof_No}}" class="farmer--nav-link">
                     <div class="farmer--nav-option farmer--nav-options-4">Location</div>
+                </a>
+                <a href="/downloadxml/{{d.Identity_Proof_No}}" class="farmer--nav-link">
+                    <div class="farmer--nav-option farmer--nav-options-4">Download</div>
                 </a>
             </div>
             <div class="farmer--nav-bar" id="bar"></div>

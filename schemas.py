@@ -28,3 +28,16 @@ class Farmer(BaseModel):
 
     class Config:
         orm_mode = True
+
+class WebUser(BaseModel):
+    WebUser_Email : str
+    WebUser_Name : str
+    WebUser_Contact : str
+    WebUser_Password : str
+    WebUser_District : str
+    WebUser_SubDistrict : str
+    WebUser_Verified : str
+    WebUser_Role : str
+
+    class Config:
+        orm_mode = True
