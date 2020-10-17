@@ -204,7 +204,7 @@ def get_farmer_by_id(id_no:str,db:Session = Depends(get_db)):
 
 if __name__ == "__main__":
     # release
-    # uvicorn.run(app, host='0.0.0.0')
+    uvicorn.run(app, host='0.0.0.0')
     # debug
-    uvicorn.run(app)
+    # uvicorn.run(app)
     
