@@ -169,8 +169,25 @@
         <input type="text" placeholder="Name" name="add_name" required />
         <input type="text" placeholder="Email Address" name="add_email" required />
         <input type="number" placeholder="Contact" name="add_contact" required>
-        <input type="text" placeholder="District" name="add_district" id="myDistrict" required>
-        <input type="text" placeholder="SubDistrict" name="add_subdistrict" id="mySubDistrict" required>
+        <!-- <input type="text" placeholder="District" name="add_district" id="myDistrict" required> -->
+        <label for="myDistrict">Choose a District:</label>
+
+        <select name="add_district" id="myDistrict" required>
+          <option value="" disabled selected> Select a district</option>
+          <!--  <option value="saab">Saab</option>
+          <option value="mercedes">Mercedes</option>
+          <option value="audi">Audi</option> -->
+        </select>
+        <br>
+        <div id="subdistrict">
+          <label for="mySubDistrict">Choose a SubDistrict:</label>
+
+          <select name="add_subdistrict" id="mySubDistrict" required>
+
+          </select>
+
+        </div>
+        <!-- <input type="text" placeholder="SubDistrict" name="add_subdistrict" id="mySubDistrict" required> -->
         <div class="form-container">
           <span>Roles:</span>
           <div class="form-grp">
@@ -198,16 +215,16 @@
 
         <div class="form-container">
           <div class="form-grp">
-            <input type="radio" name="role" id="Tehsildar" value="Tehsildar" onclick="myRoleTehsildar()">
-            <label for="Tehsildar" class="role">Tehsildar</label>
+            <input type="radio" name="role" id="tehsildar" value="Tehsildar" onclick="myRoleTehsildar()">
+            <label for="tehsildar" class="role">Tehsildar</label>
           </div>
           <div class="form-grp">
-            <input type="radio" name="role" id="Collector" value="Collector" onclick="myRole()">
-            <label for="Collector" class="role">Collector</label>
+            <input type="radio" name="role" id="collector" value="Collector" onclick="myRole()">
+            <label for="collector" class="role">Collector</label>
           </div>
           <div class="form-grp">
-            <input type="radio" name="role" id="Admin" value="Admin" onclick="myRole()" checked>
-            <label for=" Admin" class="role">Admin</label>
+            <input type="radio" name="role" id="admin" value="Admin" onclick="myRole()" checked>
+            <label for="admin" class="role">Admin</label>
           </div>
         </div>
 
@@ -230,34 +247,77 @@
     });
 
 
-    let tehsildar = document.getElementById("Tehsildar");
+    let tehsildar = document.getElementById("tehsildar");
+    let subdistrict = document.getElementById("subdistrict");
+    subdistrict.style.display = "none";
+
     if (tehsildar.checked)
       myRoleTehsildar();
 
 
-    let admin = document.getElementById("Admin");
+    let admin = document.getElementById("admin");
     let deleteuser = document.getElementById("deletewebuser");
+    var loginBut = document.getElementById("loginBut");
+    let dropdown = document.getElementById("myDistrict");
 
+    let subdropdown = document.getElementById("mySubDistrict");
+
+
+    let dropdownDistrict = async function () {
+      await fetch("https://nicpmkissan.herokuapp.com/districts?access_token=KPym!%3FTWX6~r%5Ern%3DW%2B4(fTJ%60w39%25ufcgg9gOid8l%40%3BcrHi.kVzs%2F%3E%3Aw%5EmUBF").then((data) => data.json()).then((data) => {
+
+        data.forEach((x) => {
+          let option = document.createElement("option");
+          option.setAttribute("value", x.code);
+          option.textContent = x.name;
+          dropdown.appendChild(option);
+        })
+      })
+    }
+
+    dropdown.addEventListener("change", async (e) => {
+      console.log(dropdown.value)
+      if (dropdown && dropdown.value !== "") {
+
+        await fetch(`https://nicpmkissan.herokuapp.com/subdistrict/${dropdown.value}?access_token=KPym!%3FTWX6~r%5Ern%3DW%2B4(fTJ%60w39%25ufcgg9gOid8l%40%3BcrHi.kVzs%2F%3E%3Aw%5EmUBF`).then((data) => data.json()).then((data) => {
+
+          subdistrict.style.display = "block";
+
+          subdropdown.style.display = "block";
+          data.forEach((x) => {
+            let option = document.createElement("option");
+            option.setAttribute("value", x.code);
+            option.textContent = x.name;
+            subdropdown.appendChild(option);
+          })
+        })
+      }
+    })
+
+
+    dropdownDistrict();
 
 
 
     function myCollector() {
-      document.getElementById("mySubDistrict").style.display = "none";
+      document.getElementById("subdistrict").style.display = "none";
     }
     function myTehsilder() {
       document.getElementById("mySubDistrict").style.display = "block";
     }
 
     function myRole() {
-      document.getElementById("loginBut").style.display = "block";
+      loginBut.style.display = "block";
       if (admin.checked)
         deleteuser.style.display = "block";
       else
         deleteuser.style.display = "none";
     }
     function myRoleTehsildar() {
-      document.getElementById("loginBut").style.display = "none";
-
+      if (loginBut) {
+        loginBut.style.display = "none";
+        deleteuser.style.display = "none";
+      }
     }
   </script>
 </body>
