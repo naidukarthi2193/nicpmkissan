@@ -66,7 +66,7 @@ def check_aadhar(db: Session, aadhar: str):
 
 def check_webuser_login(db:Session,email:str,password:str):
     print(password)
-    return db.query(models.WebUser).filter(models.WebUser.WebUser_Email == email ).first()
+    return db.query(models.WebUser).filter((models.WebUser.WebUser_Email == email ) & (models.WebUser.WebUser_Password == password ) ).first()
 
 def get_unverfied_webusers(db:Session):
     return db.query(models.WebUser).filter(models.WebUser.WebUser_Verified == "0").all()

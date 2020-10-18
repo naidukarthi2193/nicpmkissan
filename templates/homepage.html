@@ -195,8 +195,8 @@
 
       <form class="register-form" action="/addwebuser" method="POST">
         <input type="text" placeholder="Name" name="add_name" required />
-        <input type="text" placeholder="Email Address" name="add_email" required />
-        <input type="number" placeholder="Contact" name="add_contact" required>
+        <input type="email" placeholder="Email Address" name="add_email" required />
+        <input type="number"  minlength="6" maxlength="11" placeholder="Contact" name="add_contact" required>
         <!-- <input type="text" placeholder="District" name="add_district" id="myDistrict" required> -->
         <label for="myDistrict" class="district--labels">Choose a District:</label>
 
@@ -238,12 +238,12 @@
 
 
       <form class="login-form" action="/checklogin" method="POST">
-        <input type="text" name="email" placeholder="Email" required />
+        <input type="email" name="email" placeholder="Email" required />
         <input type="password" name="password" placeholder="Password" required />
 
         <div class="form-container">
           <div class="form-grp">
-            <input type="radio" name="role" id="tehsildar" value="Tehsildar" onclick="myRoleTehsildar()">
+            <input type="radio" name="role" id="tehsildar" value="Tehsildar" onclick="myRoleTehsildar()" checked>
             <label for="tehsildar" class="role">Tehsildar</label>
           </div>
           <div class="form-grp">
@@ -251,16 +251,16 @@
             <label for="collector" class="role">Collector</label>
           </div>
           <div class="form-grp">
-            <input type="radio" name="role" id="admin" value="Admin" onclick="myRole()" checked>
+            <input type="radio" name="role" id="admin" value="Admin" onclick="myRole()" >
             <label for="admin" class="role">Admin</label>
           </div>
         </div>
 
 
-        <button type="submit" formaction="/checklogin" id="loginBut" style="margin-bottom: 15px;"
+        <button type="submit" formaction="/checklogin" id="loginBut" style="display: none; margin-bottom: 15px;"
           formmethod="POST">Login</button>
 
-        <button type="submit" formaction="/deletewebuser" id="deletewebuser" style="margin-bottom: 15px;"
+        <button type="submit" formaction="/deletewebuser" id="deletewebuser" style="display:none; margin-bottom: 15px;"
           formmethod="POST">Delete User</button>
 
         <button type="submit" formaction="/database" formmethod="POST">Go To Database</button>

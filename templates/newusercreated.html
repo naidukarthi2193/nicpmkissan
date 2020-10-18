@@ -2,12 +2,11 @@
 <html lang="en">
 
 <head>
-<<<<<<< HEAD
+  <link rel="icon" type="image/jpg" href="https://cracku.in/latest-govt-jobs/wp-content/uploads/2020/03/NIC-Logo.jpg" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" type="image/png" href="../static/images/logo.png">
   <title>Document</title>
-
 
   <style>
     @import url(https://fonts.googleapis.com/css?family=Roboto:300);
@@ -158,148 +157,35 @@
       left: -15%;
       transform: translateY(-18%);
     }
+
+    #subdistrict {
+      display: inline-block;
+    }
+
+    label,
+    select,
+    option {
+      display: block;
+      width: 100%;
+      padding: .3rem .5rem;
+    }
+
+    #subdistrict {
+
+      margin: 0;
+      padding: 0;
+      float: left;
+      margin-bottom: 1rem;
+      ;
+    }
+
+    .district--labels {
+      /* position: absolute;
+      left: 0; */
+      text-align: left;
+      display: block;
+    }
   </style>
-=======
-  <link rel="icon" type="image/jpg" href="https://cracku.in/latest-govt-jobs/wp-content/uploads/2020/03/NIC-Logo.jpg"/>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="image/png" href="../static/images/logo.png">
-    <title>Document</title>
-   
-     
-    <style>
-        @import url(https://fonts.googleapis.com/css?family=Roboto:300);
-
-.login-page {
-  width: 800px;
-  padding: 8% 0 0;
-  margin: auto;
-}
-.form {
-  position: relative;
-  z-index: 1;
-  background: #FFFFFF;
-  max-width: 360px;
-  margin: 0 auto 100px;
-  padding: 45px;
-  text-align: center;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-}
-.form input {
-  font-family: "Roboto", sans-serif;
-  outline: 0;
-  background: #f2f2f2;
-  width: 100%;
-  border: 0;
-  margin: 0 0 15px;
-  padding: 15px;
-  box-sizing: border-box;
-  font-size: 14px;
-}
-.form button {
-  font-family: "Roboto", Segoe UI;
-  text-transform: uppercase;
-  outline: 0;
-  background: #307672;
-  width: 100%;
-  border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
-}
-.form button:hover,.form button:active,.form button:focus {
-  background: #005d6c;
-}
-.form .message {
-  margin: 15px 0 0;
-  color: #b3b3b3;
-  font-size: 12px;
-}
-.form .message a {
-  color: #0d7377;
-  text-decoration: none;
-}
-.form .register-form {
-  display: none;
-}
-.container {
-  position: relative;
-  z-index: 1;
-  max-width: 300px;
-  margin: 0 auto;
-}
-.container:before, .container:after {
-  content: "";
-  display: block;
-  clear: both;
-}
-.container .info {
-  margin: 50px auto;
-  text-align: center;
-}
-.container .info h1 {
-  margin: 0 0 15px;
-  padding: 0;
-  font-size: 36px;
-  font-weight: 300;
-  color: #1a1a1a;
-}
-.container .info span {
-  color: #4d4d4d;
-  font-size: 12px;
-}
-.container .info span a {
-  color: #000000;
-  text-decoration: none;
-}
-.container .info span .fa {
-  color: #EF3B3A;
-}
-body {
-  background: #76b852; /* fallback for old browsers */
-  background: -webkit-linear-gradient(right, #086972, #8DC26F);
-  background: -moz-linear-gradient(right, #307672, #45a298);
-  background: -o-linear-gradient(right, #086972, #8DC26F);
-  background: linear-gradient(to left, #144d53, #52de97);
-  font-family: "Roboto", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;      
-}
-
-.form-container {
-  width: 100%;
-  margin: 2% 0;
-  display: flex;
-  position: relative;
-  justify-content: space-between;
-}
-
-.form-container > span {
-  display: block;
-  position: relative;
-  bottom: 10%;
-  transform: translateY(-20%);
-}
-
-.form-grp {
-  position: relative;
-  display: flex;
-  width: 100%;
-  margin: 0 1%;
-  justify-content: space-around;
-}
-
-.role {
-  position: relative;
-  left: -15%;
-  transform: translateY(-18%);
-}
-
-    </style>
->>>>>>> 78c9a60a6c2ab232c9ac74eb7d956e81ce464bbf
 </head>
 
 <body>
@@ -308,19 +194,28 @@ body {
 
 
       <form class="register-form" action="/addwebuser" method="POST">
-        <input type="text" placeholder="Name" name="add_name" value="thiruru" required />
-        <input type="text" placeholder="Email Address" name="add_email" required />
+        <input type="text" placeholder="Name" name="add_name" required />
+        <input type="email" placeholder="Email Address" name="add_email" required />
         <input type="number" placeholder="Contact" name="add_contact" required>
-        <!-- <input type="text"  placeholder="District" name="add_district" id="myDistrict" required > -->
-        <label for="myDistrict">Choose a car:</label>
+        <!-- <input type="text" placeholder="District" name="add_district" id="myDistrict" required> -->
+        <label for="myDistrict" class="district--labels">Choose a District:</label>
 
-        <select name="add_district" id="myDistrict">
-          <option value="volvo">Volvo</option>
-          <option value="saab">Saab</option>
+        <select name="add_district" id="myDistrict" required>
+          <option value="" disabled selected> Select a district</option>
+          <!--  <option value="saab">Saab</option>
           <option value="mercedes">Mercedes</option>
-          <option value="audi">Audi</option>
+          <option value="audi">Audi</option> -->
         </select>
-        <input type="text" placeholder="SubDistrict" name="add_subdistrict" id="mySubDistrict" required>
+        <br>
+        <div id="subdistrict">
+          <label for="mySubDistrict" class="district--labels">Choose a SubDistrict:</label>
+
+          <select name="add_subdistrict" id="mySubDistrict" required>
+
+          </select>
+
+        </div>
+        <!-- <input type="text" placeholder="SubDistrict" name="add_subdistrict" id="mySubDistrict" required> -->
         <div class="form-container">
           <span>Roles:</span>
           <div class="form-grp">
@@ -343,21 +238,21 @@ body {
 
 
       <form class="login-form" action="/checklogin" method="POST">
-        <input type="text" name="email" placeholder="Email" required />
+        <input type="email" name="email" placeholder="Email" required />
         <input type="password" name="password" placeholder="Password" required />
 
         <div class="form-container">
           <div class="form-grp">
-            <input type="radio" name="role" id="Tehsildar" value="Tehsildar" onclick="myRoleTehsildar()">
-            <label for="Tehsildar" class="role">Tehsildar</label>
+            <input type="radio" name="role" id="tehsildar" value="Tehsildar" onclick="myRoleTehsildar()">
+            <label for="tehsildar" class="role">Tehsildar</label>
           </div>
           <div class="form-grp">
-            <input type="radio" name="role" id="Collector" value="Collector" onclick="myRole()">
-            <label for="Collector" class="role">Collector</label>
+            <input type="radio" name="role" id="collector" value="Collector" onclick="myRole()">
+            <label for="collector" class="role">Collector</label>
           </div>
           <div class="form-grp">
-            <input type="radio" name="role" id="Admin" value="Admin" onclick="myRole()"" checked>
-                <label for=" Admin" class="role">Admin</label>
+            <input type="radio" name="role" id="admin" value="Admin" onclick="myRole()" checked>
+            <label for="admin" class="role">Admin</label>
           </div>
         </div>
 
@@ -365,32 +260,103 @@ body {
         <button type="submit" formaction="/checklogin" id="loginBut" style="margin-bottom: 15px;"
           formmethod="POST">Login</button>
 
+        <button type="submit" formaction="/deletewebuser" id="deletewebuser" style="margin-bottom: 15px;"
+          formmethod="POST">Delete User</button>
+
         <button type="submit" formaction="/database" formmethod="POST">Go To Database</button>
         <p class="message">Not registered? <a href="#">Create an account</a></p>
-        <h3>New User Created</h3>
-        <h5>Please Wait For Verification by Officer</h5>
+        <h2>New User Application Submitted</h2>
+        <h4>Wait for confirmation from Applied Email ....</h4>
       </form>
     </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script>+
-      $('.message a').click(function () {
-        $('form').animate({ height: "toggle", opacity: "toggle" }, "slow");
-      });
+  <script>
+    $('.message a').click(function () {
+      $('form').animate({ height: "toggle", opacity: "toggle" }, "slow");
+    });
+
+    let roletehsildar = document.getElementById("Tehsildar");
+
+    let tehsildar = document.getElementById("tehsildar");
+    let subdistrict = document.getElementById("subdistrict");
+    subdistrict.style.display = "none";
+
+    if (tehsildar.checked)
+      myRoleTehsildar();
+
+
+    let admin = document.getElementById("admin");
+    let deleteuser = document.getElementById("deletewebuser");
+    var loginBut = document.getElementById("loginBut");
+    let dropdown = document.getElementById("myDistrict");
+
+    roletehsildar.addEventListener("click", () => {
+      subdistrict_dropdown(dropdown.value);
+    })
+    let subdropdown = document.getElementById("mySubDistrict");
+
+
+    let dropdownDistrict = async function () {
+      await fetch("https://nicpmkissan.herokuapp.com/districts?access_token=KPym!%3FTWX6~r%5Ern%3DW%2B4(fTJ%60w39%25ufcgg9gOid8l%40%3BcrHi.kVzs%2F%3E%3Aw%5EmUBF").then((data) => data.json()).then((data) => {
+
+        data.forEach((x) => {
+          let option = document.createElement("option");
+          option.setAttribute("value", x.code);
+          option.textContent = x.name;
+          dropdown.appendChild(option);
+        })
+      })
+    }
+
+    dropdown.addEventListener("change", async (e) => {
+      console.log(dropdown.value)
+      let role = document.getElementById("Collector")
+      if (dropdown && dropdown.value !== "" && !role.checked) {
+        subdistrict_dropdown(dropdown.value);
+      }
+    })
+
+    async function subdistrict_dropdown() {
+      await fetch(`https://nicpmkissan.herokuapp.com/subdistrict/${dropdown.value}?access_token=KPym!%3FTWX6~r%5Ern%3DW%2B4(fTJ%60w39%25ufcgg9gOid8l%40%3BcrHi.kVzs%2F%3E%3Aw%5EmUBF`).then((data) => data.json()).then((data) => {
+
+        subdistrict.style.display = "block";
+
+        subdropdown.style.display = "block";
+        subdropdown.style.width = "100%"
+        subdropdown.innerHTML = "";
+        data.forEach((x) => {
+          let option = document.createElement("option");
+          option.setAttribute("value", x.code);
+          option.textContent = x.name;
+          subdropdown.appendChild(option);
+        })
+      })
+    }
+
+    dropdownDistrict();
+
+
 
     function myCollector() {
-      document.getElementById("mySubDistrict").style.display = "none";
+      document.getElementById("subdistrict").style.display = "none";
     }
     function myTehsilder() {
       document.getElementById("mySubDistrict").style.display = "block";
     }
 
     function myRole() {
-      document.getElementById("loginBut").style.display = "block";
+      loginBut.style.display = "block";
+      if (admin.checked)
+        deleteuser.style.display = "block";
+      else
+        deleteuser.style.display = "none";
     }
     function myRoleTehsildar() {
-      document.getElementById("loginBut").style.display = "none";
-
+      if (loginBut) {
+        loginBut.style.display = "none";
+        deleteuser.style.display = "none";
+      }
     }
   </script>
 </body>

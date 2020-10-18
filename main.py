@@ -105,7 +105,7 @@ def deletewebuser(
 @app.post("/deletebyadmin")
 def deletebyadmin(request: Request,db : Session = Depends(get_db)):
     data =  crud.get_all_webusers(db=db)
-    return templates.TemplateResponse('verifiedadmin.html', context={'request': request,"data":data})
+    return templates.TemplateResponse('deleteuser.html', context={'request': request,"data":data})
 
 @app.post("/checklogin/")
 def webuser_login(
@@ -121,7 +121,7 @@ def webuser_login(
         if email == ADMIN_EMAIL and  password == ADMIN_PASSWORD:
             return RedirectResponse( url=f'/verifiedadmin/'+enc_email ) 
         return templates.TemplateResponse('detailsnotfound.html', context={'request': request})
-    db_user = crud.check_webuser_login(db=db , email=email,password=enc_password)
+    db_user = crud.check_webuser_login(db=db , email=email,password=password)
 
     print(db_user)
     if db_user == None :
@@ -153,7 +153,7 @@ def getfarmerdatabase(
             return templates.TemplateResponse("index2.html", {"request": request, "data": records}) 
 
         return templates.TemplateResponse('detailsnotfound.html', context={'request': request})
-    db_user = crud.check_webuser_login(db=db , email=email,password=enc_password)
+    db_user = crud.check_webuser_login(db=db , email=email,password=password)
     if db_user == None :
         return templates.TemplateResponse('detailsnotfound.html', context={'request': request})
     else:
@@ -188,7 +188,7 @@ def webuser_add(
         WebUser_Email = add_email,
         WebUser_Name =add_name,
         WebUser_Contact =add_contact,
-        WebUser_Password =encryptkey.encrypt(add_password.encode()).decode("utf-8"),
+        WebUser_Password =add_password,
         WebUser_District =add_district,
         WebUser_SubDistrict =add_subdistrict,
         WebUser_Verified ="0",
