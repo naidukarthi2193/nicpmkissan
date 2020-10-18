@@ -285,6 +285,7 @@
           subdistrict.style.display = "block";
 
           subdropdown.style.display = "block";
+          subdropdown.innerHTML = "";
           data.forEach((x) => {
             let option = document.createElement("option");
             option.setAttribute("value", x.code);
