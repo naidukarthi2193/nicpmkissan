@@ -34,7 +34,8 @@ def get_lgdirectory_districts():
         dist['code'] = districts['dis_code']
         dist['name'] = districts['dis_name']
         districtslist.append(dist)
-    return districtslist
+    final = [dict(t) for t in {tuple(d.items()) for d in districtslist}]
+    return sorted(final, key = lambda final: final['name'])
 
 @router.get("/subdistrict/{dis_code}",tags=["APIs"])
 def get_lgdirectory_subdistricts(dis_code):
@@ -47,7 +48,7 @@ def get_lgdirectory_subdistricts(dis_code):
                 subdict['name'] = subdistricts['subdis_name']
                 subdistrictslist.append(subdict)
             break
-    return subdistrictslist
+    return sorted(subdistrictslist, key = lambda subdistrictslist: subdistrictslist['name'])
 
 @router.get("/village/{dis_code}/{subdis_code}",tags=["APIs"])
 def get_lgdirectory_villages(dis_code,subdis_code):
@@ -62,7 +63,8 @@ def get_lgdirectory_villages(dis_code,subdis_code):
                         vill_dict['code'] = villages['village_code']
                         villageslist.append(vill_dict)
                     break
-    return villageslist
+    final = [dict(t) for t in {tuple(d.items()) for d in villageslist}]
+    return sorted(final, key = lambda final: final['name'])
 
 @router.get("/block/{dis_code}",tags=["APIs"])
 def get_lgdirectory_blocks(dis_code):
@@ -75,7 +77,7 @@ def get_lgdirectory_blocks(dis_code):
                 block_dict['name'] = block['block_name']
                 blocklist.append(block_dict)
             break
-    return blocklist
+    return sorted(blocklist, key = lambda blocklist: blocklist['name'])
 
 @router.post("/add/" , response_model = schemas.Farmer,tags=["APIs"])
 def add_new_farmer(farmer: schemas.Farmer,db : Session = Depends(get_db)):
