@@ -8,7 +8,6 @@
   <link rel="shortcut icon" type="image/png" href="../static/images/logo.png">
   <title>Document</title>
 
-
   <style>
     @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
@@ -158,6 +157,34 @@
       left: -15%;
       transform: translateY(-18%);
     }
+
+    #subdistrict {
+      display: inline-block;
+    }
+
+    label,
+    select,
+    option {
+      display: block;
+      width: 100%;
+      padding: .3rem .5rem;
+    }
+
+    #subdistrict {
+
+      margin: 0;
+      padding: 0;
+      float: left;
+      margin-bottom: 1rem;
+      ;
+    }
+
+    .district--labels {
+      /* position: absolute;
+      left: 0; */
+      text-align: left;
+      display: block;
+    }
   </style>
 </head>
 
@@ -171,7 +198,7 @@
         <input type="text" placeholder="Email Address" name="add_email" required />
         <input type="number" placeholder="Contact" name="add_contact" required>
         <!-- <input type="text" placeholder="District" name="add_district" id="myDistrict" required> -->
-        <label for="myDistrict">Choose a District:</label>
+        <label for="myDistrict" class="district--labels">Choose a District:</label>
 
         <select name="add_district" id="myDistrict" required>
           <option value="" disabled selected> Select a district</option>
@@ -181,7 +208,7 @@
         </select>
         <br>
         <div id="subdistrict">
-          <label for="mySubDistrict">Choose a SubDistrict:</label>
+          <label for="mySubDistrict" class="district--labels">Choose a SubDistrict:</label>
 
           <select name="add_subdistrict" id="mySubDistrict" required>
 
@@ -247,6 +274,7 @@
       $('form').animate({ height: "toggle", opacity: "toggle" }, "slow");
     });
 
+    let roletehsildar = document.getElementById("Tehsildar");
 
     let tehsildar = document.getElementById("tehsildar");
     let subdistrict = document.getElementById("subdistrict");
@@ -261,6 +289,9 @@
     var loginBut = document.getElementById("loginBut");
     let dropdown = document.getElementById("myDistrict");
 
+    roletehsildar.addEventListener("click", () => {
+      subdistrict_dropdown(dropdown.value);
+    })
     let subdropdown = document.getElementById("mySubDistrict");
 
 
@@ -278,24 +309,28 @@
 
     dropdown.addEventListener("change", async (e) => {
       console.log(dropdown.value)
-      if (dropdown && dropdown.value !== "") {
-
-        await fetch(`https://nicpmkissan.herokuapp.com/subdistrict/${dropdown.value}?access_token=KPym!%3FTWX6~r%5Ern%3DW%2B4(fTJ%60w39%25ufcgg9gOid8l%40%3BcrHi.kVzs%2F%3E%3Aw%5EmUBF`).then((data) => data.json()).then((data) => {
-
-          subdistrict.style.display = "block";
-
-          subdropdown.style.display = "block";
-          subdropdown.innerHTML = "";
-          data.forEach((x) => {
-            let option = document.createElement("option");
-            option.setAttribute("value", x.code);
-            option.textContent = x.name;
-            subdropdown.appendChild(option);
-          })
-        })
+      let role = document.getElementById("Collector")
+      if (dropdown && dropdown.value !== "" && !role.checked) {
+        subdistrict_dropdown(dropdown.value);
       }
     })
 
+    async function subdistrict_dropdown() {
+      await fetch(`https://nicpmkissan.herokuapp.com/subdistrict/${dropdown.value}?access_token=KPym!%3FTWX6~r%5Ern%3DW%2B4(fTJ%60w39%25ufcgg9gOid8l%40%3BcrHi.kVzs%2F%3E%3Aw%5EmUBF`).then((data) => data.json()).then((data) => {
+
+        subdistrict.style.display = "block";
+
+        subdropdown.style.display = "block";
+        subdropdown.style.width = "100%"
+        subdropdown.innerHTML = "";
+        data.forEach((x) => {
+          let option = document.createElement("option");
+          option.setAttribute("value", x.code);
+          option.textContent = x.name;
+          subdropdown.appendChild(option);
+        })
+      })
+    }
 
     dropdownDistrict();
 
