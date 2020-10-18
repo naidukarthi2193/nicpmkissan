@@ -70,7 +70,7 @@ async def get_api_key(
     elif api_key_cookie == API_KEY:
         return api_key_cookie
     else:
-        raise HTTPException(status_code=HTTP_403_FORBIDDEN, detail="Could not validate credentials")
+        raise HTTPException(status_code=HTTP_403_FORBIDDEN, detail="Could not validate redentials")
 
 def get_db():
     try:
@@ -90,6 +90,22 @@ app.include_router(
 def form_post(request: Request ):
     return templates.TemplateResponse('homepage.html', context={'request': request})
 
+@app.post("/deletewebuser")
+def deletewebuser(
+    request: Request,
+    email: str = Form(...),
+    password: str = Form(...),
+    role: str = Form(...)):
+    if role == "Admin":
+        if email == ADMIN_EMAIL and  password == ADMIN_PASSWORD:
+            return RedirectResponse( url=f'/deletebyadmin/' ) 
+        else:
+            return templates.TemplateResponse('detailsnotfound.html', context={'request': request})
+
+@app.post("/deletebyadmin")
+def deletebyadmin(request: Request,db : Session = Depends(get_db)):
+    data =  crud.get_all_webusers(db=db)
+    return templates.TemplateResponse('verifiedadmin.html', context={'request': request,"data":data})
 
 @app.post("/checklogin/")
 def webuser_login(
@@ -119,7 +135,6 @@ def webuser_login(
 
             enc_district =  encryptkey.encrypt(db_user.WebUser_District.encode()).decode("utf-8")
             enc_subdistrict =  encryptkey.encrypt(db_user.WebUser_SubDistrict.encode()).decode("utf-8")
-            # TODO TEHSILDAR Collector IMPLEMENTATION
             return RedirectResponse( url='/database/{}/{}/'.format(enc_district,enc_subdistrict))
    
 @app.post("/database/")

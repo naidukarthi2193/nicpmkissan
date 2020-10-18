@@ -93,3 +93,12 @@ def verify_user(db:Session,email:str):
     db.commit()
     db.refresh(db.query(models.WebUser).filter(models.WebUser.WebUser_Email == email).first())
     return db.query(models.WebUser).filter(models.WebUser.WebUser_Email == email).first()
+
+def delete_webuser(db:Session,email:str):
+    try:
+        user = db.query(models.WebUser).filter(models.WebUser.WebUser_Email == email ).first()
+        db.delete(user)
+        db.commit()
+        return True 
+    except:
+        return False

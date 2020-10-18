@@ -22,7 +22,7 @@
             <p>Contact : <strong> {{d.WebUser_Contact}} </strong> </p>
             <p>Role : <strong> {{d.WebUser_Role}} </strong> </p>
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#verifiedModalCenter" onclick=" onVerify( '{{d.WebUser_Email}}' )">Verify</button>
-            <button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#rejectedModalCenter" >Reject</button>
+            <button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#rejectedModalCenter" onclick=" onReject( '{{d.WebUser_Email}}' )">Reject</button>
         </div>
       </div>
     {%else%}
@@ -75,24 +75,34 @@
 
     <script>
         function onVerify(email) {
-  //         var url = "http://localhost:8000/verifyuser?"
-  //           console.log(email)
-  //           fetch(url, {
-  //             method: 'post',
-  //             headers: {
-  //               "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-  //               },
-  //             body: new URLSearchParams({email: email,access_token: "key",})
-  // })
-  // .then(function (data) {
-  //   console.log('Request succeeded with JSON response', data);
-  // })
-  // .catch(function (error) {
-  //   console.log('Request failed', error);
-  // });
-  // TODO VERIFY URL
       var x = document.getElementById(email);
-    x.style.display = "none";
+          var url = "/verifyuser?"+ $.param({"email": email});
+          const params = {
+            headers:{
+              "content-type": "application/json; charset=UTF-8",
+              "access_token" : "KPym!?TWX6~r^rn=W+4(fTJ`w39%ufcgg9gOid8l@;crHi.kVzs/>:w^mUBF"
+            },
+            method:"POST"
+          };
+            fetch(url,params)
+            .then(data=>(x.style.display = "none"))
+            .then(res=>(console.log(res)))
+            .catch(error=>console.log(error))
+}
+function onReject(email) {
+      var x = document.getElementById(email);
+          var url = "/deleteuser?"+ $.param({"email": email});
+          const params = {
+            headers:{
+              "content-type": "application/json; charset=UTF-8",
+              "access_token" : "KPym!?TWX6~r^rn=W+4(fTJ`w39%ufcgg9gOid8l@;crHi.kVzs/>:w^mUBF"
+            },
+            method:"POST"
+          };
+            fetch(url,params)
+            .then(data=>(x.style.display = "none"))
+            .then(res=>(console.log(res)))
+            .catch(error=>console.log(error))
 }
     </script>
     

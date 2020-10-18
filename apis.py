@@ -112,14 +112,41 @@ def get_all_webusers(db : Session = Depends(get_db)):
 @router.post("/verifyuser",tags=["APIs"], response_model=schemas.WebUser)
 def verifyuser(email :str,db : Session = Depends(get_db)):
     try:
-        server = smtplib.SMTP_SSL('smtp.gmail.com', 587 )
-        server.ehlo()
-        server.login("karthikraj.v17@siesgst.ac.in", "Kar123thik456")
-        server.sendmail("karthikraj.v17@siesgst.ac.in", email, "YOUR ACCOUNT HAS BEEN VERIFIED")
-        server.close()
+        s = smtplib.SMTP(os.getenv("SMTP_DOMAIN"), int(os.getenv("SMTP_PORT"))) 
+        s.starttls() 
+        s.login(os.getenv("SMTP_SENDER_EMAIL"), os.getenv("SMTP_SENDER_PASSWORD"))  
+        message = """\
+        Subject: PM KISSAN USER ADDED
 
+        Your Request for User Regeisteration has been Accepted 
+        Please Visit the Website for Logging In
+        """
+        s.sendmail(os.getenv("SMTP_SENDER_EMAIL"), email, message)  
+        s.quit() 
         print ('Email sent!')
     except:
         print ('Something went wrong...')
     return crud.verify_user(db=db,email=email)
 
+@router.post("/deleteuser",tags=["APIs"])
+def deleteuser(email:str,db:Session = Depends(get_db)):
+    if (crud.delete_webuser(db=db,email=email)):
+        try:
+            s = smtplib.SMTP(os.getenv("SMTP_DOMAIN"), int(os.getenv("SMTP_PORT"))) 
+            s.starttls() 
+            s.login(os.getenv("SMTP_SENDER_EMAIL"), os.getenv("SMTP_SENDER_PASSWORD"))  
+            message = """\
+            Subject: PM KISSAN USER DELETED
+
+            Your Registeration has be DELETED by the Admin
+            Please Re-Register or Contact Admin For Clarity at {}
+            """.format(os.getenv("ADMIN_EMAIL"))
+            s.sendmail(os.getenv("SMTP_SENDER_EMAIL"), email, message)  
+            s.quit() 
+            print ('Email sent!')
+            return {"status": "User Deleted"}
+        except:
+            return {"status" : "Some Error"}
+        
+    else:
+        return {"status" : "Some Error"}
