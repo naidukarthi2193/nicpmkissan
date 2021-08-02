@@ -188,7 +188,7 @@ def webuser_add(
         WebUser_Email = add_email,
         WebUser_Name =add_name,
         WebUser_Contact =add_contact,
-        WebUser_Password =add_password,
+        WebUser_Password =encryptkey.encrypt(add_password.encode()).decode("utf-8"),
         WebUser_District =add_district,
         WebUser_SubDistrict =add_subdistrict,
         WebUser_Verified ="0",
